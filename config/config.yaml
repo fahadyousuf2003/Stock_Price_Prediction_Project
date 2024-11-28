@@ -1,0 +1,8 @@
+artifacts_root: artifacts
+
+data_ingestion:
+  root_dir: artifacts/data_ingestion
+  tickers: ["AAPL", "GOOG", "MSFT", "AMZN"]  # List of tickers
+  start_date: 2012-01-01       # Start date for stock price data retrieval
+  end_date: now                # End date for stock price data retrieval ('now' for current date)
+  local_data_dir: artifacts/data_ingestion/raw_data  # Directory to save raw data files for each stock
