@@ -1,6 +1,6 @@
 from smPredictor.constants import *
 from smPredictor.utils.common import read_yaml, create_directories
-from smPredictor.entity.config_entity import DataIngestionConfig
+from smPredictor.entity.config_entity import (DataIngestionConfig,DataTransformationConfig)
 
 
 class ConfigurationManager:
@@ -32,3 +32,23 @@ class ConfigurationManager:
         )
         
         return data_ingestion_config
+    
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        config = self.config.data_transformation
+        
+        create_directories([config.root_dir])
+        
+        data_transformation_config = DataTransformationConfig(
+            root_dir=config.root_dir,
+            apple_data_dir=config.apple_data_dir,
+            amazon_data_dir=config.apple_data_dir,
+            google_data_dir=config.apple_data_dir,
+            microsoft_data_dir=config.apple_data_dir,
+            transformed_apple_data_dir= config.transformed_apple_data_dir,
+            transformed_amazon_data_dir=config.transformed_amazon_data_dir,
+            transformed_google_data_dir=config.transformed_google_data_dir,
+            transformed_microsoft_data_dir=config.transformed_microsoft_data_dir
+            
+        )
+        
+        return data_transformation_config
