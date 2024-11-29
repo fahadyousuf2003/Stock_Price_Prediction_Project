@@ -1,6 +1,6 @@
 from smPredictor.constants import *
 from smPredictor.utils.common import read_yaml, create_directories
-from smPredictor.entity.config_entity import (DataIngestionConfig,DataTransformationConfig)
+from smPredictor.entity.config_entity import (DataIngestionConfig,DataTransformationConfig,ModelTrainerConfig)
 
 
 class ConfigurationManager:
@@ -52,3 +52,31 @@ class ConfigurationManager:
         )
         
         return data_transformation_config
+    
+    def get_model_trainer_config(self) -> ModelTrainerConfig:
+        config = self.config.model_trainer
+        params = self.params
+        
+        create_directories([config.root_dir])
+        
+        model_trainer_config = ModelTrainerConfig(
+            root_dir=config.root_dir,
+            apple_transformed_data_dir=config.apple_transformed_data_dir,
+            amazon_transformed_data_dir=config.amazon_transformed_data_dir,
+            google_transformed_data_dir=config.google_transformed_data_dir,
+            microsoft_transformed_data_dir=config.microsoft_transformed_data_dir,
+            apple_model_name=config.apple_model_name,
+            amazon_model_name=config.amazon_model_name,
+            google_model_name=config.google_model_name,
+            microsoft_model_name=config.microsoft_model_name,
+            layer1=params.layer1,
+            layer2=params.layer2,
+            layer3=params.layer3,
+            layer4=params.layer4,
+            optimizer=params.optimizer,
+            loss=params.loss,
+            batch_size=params.batch_size,
+            epochs=params.epochs
+        )
+        
+        return model_trainer_config

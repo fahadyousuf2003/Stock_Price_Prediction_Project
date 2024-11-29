@@ -18,3 +18,14 @@ data_transformation:
   transformed_google_data_dir: artifacts/data_transformation/transformed_data/google_data
   transformed_microsoft_data_dir: artifacts/data_transformation/transformed_data/microsoft_data
   
+
+model_trainer:
+  root_dir: artifacts/model_trainer
+  apple_transformed_data_dir: artifacts/data_transformation/transformed_data/apple_data/transformed_apple.csv
+  amazon_transformed_data_dir: artifacts/data_transformation/transformed_data/amazon_data/transformed_amazon.csv
+  google_transformed_data_dir: artifacts/data_transformation/transformed_data/google_data/transformed_google.csv
+  microsoft_transformed_data_dir: artifacts/data_transformation/transformed_data/microsoft_data/transformed_microsoft.csv
+  apple_model_name: apple_model.keras
+  amazon_model_name: amazon_model.keras
+  google_model_name: google_model.keras
+  microsoft_model_name: microsoft_model.keras

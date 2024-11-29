@@ -1,1 +1,8 @@
-key: val
+layer1: 128
+layer2: 64
+layer3: 25
+layer4: 1
+optimizer: adam
+loss: mean_squared_error
+batch_size: 1
+epochs: 1
