@@ -40,3 +40,17 @@ class ModelTrainerConfig:
     loss: str
     batch_size: int
     epochs: int
+    
+    
+@dataclass(frozen=True)
+class EvaluationConfig:
+    apple_model_dir:Path
+    amazon_model_dir:Path
+    google_model_dir:Path
+    microsoft_model_dir:Path
+    apple_raw_data_dir:Path
+    amazon_raw_data_dir:Path
+    google_raw_data_dir:Path
+    microsoft_raw_data_dir:Path
+    
+    

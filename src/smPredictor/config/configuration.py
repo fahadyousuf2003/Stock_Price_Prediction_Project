@@ -1,6 +1,7 @@
 from smPredictor.constants import *
 from smPredictor.utils.common import read_yaml, create_directories
-from smPredictor.entity.config_entity import (DataIngestionConfig,DataTransformationConfig,ModelTrainerConfig)
+from smPredictor.entity.config_entity import (DataIngestionConfig,DataTransformationConfig,ModelTrainerConfig,EvaluationConfig)
+from pathlib import Path
 
 
 class ConfigurationManager:
@@ -80,3 +81,16 @@ class ConfigurationManager:
         )
         
         return model_trainer_config
+    
+    def get_validation_config(self) -> EvaluationConfig:
+        eval_config= EvaluationConfig(
+            apple_model_dir=Path("artifacts/model_trainer/apple_model.keras"),
+            amazon_model_dir=Path("artifacts/model_trainer/amazon_model.keras"),
+            google_model_dir=Path("artifacts/model_trainer/google_model.keras"),
+            microsoft_model_dir=Path("artifacts/model_trainer/microsoft_model.keras"),
+            apple_raw_data_dir=Path("artifacts/data_ingestion/raw_data/AAPL.csv"),
+            amazon_raw_data_dir=Path("artifacts/data_ingestion/raw_data/AMZN.csv"),
+            google_raw_data_dir=Path("artifacts/data_ingestion/raw_data/GOOG.csv"),
+            microsoft_raw_data_dir=Path("artifacts/data_ingestion/raw_data/MSFT.csv")
+        )
+        return eval_config
