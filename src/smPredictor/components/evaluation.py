@@ -11,7 +11,7 @@ from smPredictor.entity.config_entity import EvaluationConfig
 from smPredictor.utils.common import save_json
 
 class Evaluation:
-    def __init__(self, config):
+    def __init__(self, config: EvaluationConfig):
         self.config = config
     
     def create_rmse_directory(self):
@@ -20,12 +20,16 @@ class Evaluation:
         rmse_dir.mkdir(parents=True, exist_ok=True)
         
     def evaluate(self):
-        #Load Models
+        # Load all the models
         apple_model = tf.keras.models.load_model("artifacts/model_trainer/apple_model.keras")
         amazon_model = tf.keras.models.load_model("artifacts/model_trainer/amazon_model.keras")
         google_model = tf.keras.models.load_model("artifacts/model_trainer/google_model.keras")
         microsoft_model = tf.keras.models.load_model("artifacts/model_trainer/microsoft_model.keras")
-
+        silk_model = tf.keras.models.load_model("artifacts/model_trainer/silk_model.keras")
+        pace_model = tf.keras.models.load_model("artifacts/model_trainer/pace_model.keras")
+        fauji_model = tf.keras.models.load_model("artifacts/model_trainer/fauji_model.keras")
+        punjab_model = tf.keras.models.load_model("artifacts/model_trainer/punjab_model.keras")
+                
         # Evaluate Apple Model on Test Data
         apple_scaler = MinMaxScaler(feature_range=(0, 1))
         apple_raw_data = pd.read_csv(self.config.apple_raw_data_dir)
@@ -117,6 +121,90 @@ class Evaluation:
         microsoft_predictions = microsoft_scaler.inverse_transform(microsoft_predictions)
         microsoft_rmse = np.sqrt(np.mean((microsoft_predictions - microsoft_y_test) ** 2))
         save_json(path=Path("artifacts/model_rmse/microsoft_rmse.json"), data={"RMSE": microsoft_rmse})
+        
+        # Evaluate Silk Model on Test Data
+        silk_scaler = MinMaxScaler(feature_range=(0, 1))
+        silk_raw_data = pd.read_csv(self.config.silk_raw_data_dir)
+        silk_raw_data = silk_raw_data.filter(['Close'])
+        silk_raw_data['Close'] = pd.to_numeric(silk_raw_data['Close'], errors='coerce')
+        silk_raw_data = silk_raw_data.dropna()
+        silk_dataset = silk_raw_data.values
+        silk_training_data_len = int(np.ceil(len(silk_dataset) * .95))
+        silk_scaled_data = silk_scaler.fit_transform(silk_dataset)
+        silk_test_data = silk_scaled_data[silk_training_data_len - 60:, :]
+        silk_x_test = []
+        silk_y_test = silk_dataset[silk_training_data_len:, :]
+        for i in range(60, len(silk_test_data)):
+            silk_x_test.append(silk_test_data[i - 60:i, 0])
+        silk_x_test = np.array(silk_x_test)
+        silk_x_test = np.reshape(silk_x_test, (silk_x_test.shape[0], silk_x_test.shape[1], 1))
+        silk_predictions = silk_model.predict(silk_x_test)
+        silk_predictions = silk_scaler.inverse_transform(silk_predictions)
+        silk_rmse = np.sqrt(np.mean((silk_predictions - silk_y_test) ** 2))
+        save_json(path=Path("artifacts/model_rmse/silk_rmse.json"), data={"RMSE": silk_rmse})
+        
+        # Evaluate Pace Model on Test Data
+        pace_scaler = MinMaxScaler(feature_range=(0, 1))
+        pace_raw_data = pd.read_csv(self.config.pace_raw_data_dir)
+        pace_raw_data = pace_raw_data.filter(['Close'])
+        pace_raw_data['Close'] = pd.to_numeric(pace_raw_data['Close'], errors='coerce')
+        pace_raw_data = pace_raw_data.dropna()
+        pace_dataset = pace_raw_data.values
+        pace_training_data_len = int(np.ceil(len(pace_dataset) * .95))
+        pace_scaled_data = pace_scaler.fit_transform(pace_dataset)
+        pace_test_data = pace_scaled_data[pace_training_data_len - 60:, :]
+        pace_x_test = []
+        pace_y_test = pace_dataset[pace_training_data_len:, :]
+        for i in range(60, len(pace_test_data)):
+            pace_x_test.append(pace_test_data[i - 60:i, 0])
+        pace_x_test = np.array(pace_x_test)
+        pace_x_test = np.reshape(pace_x_test, (pace_x_test.shape[0], pace_x_test.shape[1], 1))
+        pace_predictions = pace_model.predict(pace_x_test)
+        pace_predictions = pace_scaler.inverse_transform(pace_predictions)
+        pace_rmse = np.sqrt(np.mean((pace_predictions - pace_y_test) ** 2))
+        save_json(path=Path("artifacts/model_rmse/pace_rmse.json"), data={"RMSE": pace_rmse})
+        
+        # Evaluate Fauji Model on Test Data
+        fauji_scaler = MinMaxScaler(feature_range=(0, 1))
+        fauji_raw_data = pd.read_csv(self.config.fauji_raw_data_dir)
+        fauji_raw_data = fauji_raw_data.filter(['Close'])
+        fauji_raw_data['Close'] = pd.to_numeric(fauji_raw_data['Close'], errors='coerce')
+        fauji_raw_data = fauji_raw_data.dropna()
+        fauji_dataset = fauji_raw_data.values
+        fauji_training_data_len = int(np.ceil(len(fauji_dataset) * .95))
+        fauji_scaled_data = fauji_scaler.fit_transform(fauji_dataset)
+        fauji_test_data = fauji_scaled_data[fauji_training_data_len - 60:, :]
+        fauji_x_test = []
+        fauji_y_test = fauji_dataset[fauji_training_data_len:, :]
+        for i in range(60, len(fauji_test_data)):
+            fauji_x_test.append(fauji_test_data[i - 60:i, 0])
+        fauji_x_test = np.array(fauji_x_test)
+        fauji_x_test = np.reshape(fauji_x_test, (fauji_x_test.shape[0], fauji_x_test.shape[1], 1))
+        fauji_predictions = fauji_model.predict(fauji_x_test)
+        fauji_predictions = fauji_scaler.inverse_transform(fauji_predictions)
+        fauji_rmse = np.sqrt(np.mean((fauji_predictions - fauji_y_test) ** 2))
+        save_json(path=Path("artifacts/model_rmse/fauji_rmse.json"), data={"RMSE": fauji_rmse})
+        
+        # Evaluate Punjab Model on Test Data
+        punjab_scaler = MinMaxScaler(feature_range=(0, 1))
+        punjab_raw_data = pd.read_csv(self.config.punjab_raw_data_dir)
+        punjab_raw_data = punjab_raw_data.filter(['Close'])
+        punjab_raw_data['Close'] = pd.to_numeric(punjab_raw_data['Close'], errors='coerce')
+        punjab_raw_data = punjab_raw_data.dropna()
+        punjab_dataset = punjab_raw_data.values
+        punjab_training_data_len = int(np.ceil(len(punjab_dataset) * .95))
+        punjab_scaled_data = punjab_scaler.fit_transform(punjab_dataset)
+        punjab_test_data = punjab_scaled_data[punjab_training_data_len - 60:, :]
+        punjab_x_test = []
+        punjab_y_test = punjab_dataset[punjab_training_data_len:, :]
+        for i in range(60, len(punjab_test_data)):
+            punjab_x_test.append(punjab_test_data[i - 60:i, 0])
+        punjab_x_test = np.array(punjab_x_test)
+        punjab_x_test = np.reshape(punjab_x_test, (punjab_x_test.shape[0], punjab_x_test.shape[1], 1))
+        punjab_predictions = punjab_model.predict(punjab_x_test)
+        punjab_predictions = punjab_scaler.inverse_transform(punjab_predictions)
+        punjab_rmse = np.sqrt(np.mean((punjab_predictions - punjab_y_test) ** 2))
+        save_json(path=Path("artifacts/model_rmse/punjab_rmse.json"), data={"RMSE": punjab_rmse})
 
 
 

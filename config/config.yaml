@@ -2,30 +2,50 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  tickers: ["AAPL", "GOOG", "MSFT", "AMZN"]  # List of tickers
-  start_date: 2012-01-01       # Start date for stock price data retrieval
-  end_date: now                # End date for stock price data retrieval ('now' for current date)
-  local_data_dir: artifacts/data_ingestion/raw_data  # Directory to save raw data files for each stock
+  itickers: ["AAPL", "GOOG", "MSFT", "AMZN"] # APPLE, GOOGLE, MICROSOFT, AMAZON
+  ptickers: ["SILK", "PACE", "FFL", "BOP"] # SILK_Bank, PACE_Pakistan, Fauji_Foods_Limited, Bank_of_Punjab_Pakistan
+  istart_date: 2012-01-01
+  iend_date: now
+  pstart_date: 2012-01-01
+  pend_date: now
+  internationalStocks_local_data_dir: artifacts/data_ingestion/international_stocks/raw_data
+  pakistanStocks_local_data_dir: artifacts/data_ingestion/pakistan_stocks/raw_data
 
 data_transformation:
   root_dir: artifacts/data_transformation
-  apple_data_dir: artifacts/data_ingestion/raw_data/AAPL.csv 
-  amazon_data_dir: artifacts/data_ingestion/raw_data/AMZN.csv
-  google_data_dir: artifacts/data_ingestion/raw_data/GOOG.csv
-  microsoft_data_dir: artifacts/data_ingestion/raw_data/MSFT.csv
-  transformed_apple_data_dir: artifacts/data_transformation/transformed_data/apple_data
-  transformed_amazon_data_dir: artifacts/data_transformation/transformed_data/amazon_data
-  transformed_google_data_dir: artifacts/data_transformation/transformed_data/google_data
-  transformed_microsoft_data_dir: artifacts/data_transformation/transformed_data/microsoft_data
+  apple_data_dir: artifacts/data_ingestion/international_stocks/raw_data/AAPL.csv 
+  amazon_data_dir: artifacts/data_ingestion/international_stocks/raw_data/AMZN.csv
+  google_data_dir: artifacts/data_ingestion/international_stocks/raw_data/GOOG.csv
+  microsoft_data_dir: artifacts/data_ingestion/international_stocks/raw_data/MSFT.csv
+  transformed_apple_data_dir: artifacts/data_transformation/international_stocks
+  transformed_amazon_data_dir: artifacts/data_transformation/international_stocks
+  transformed_google_data_dir: artifacts/data_transformation/international_stocks
+  transformed_microsoft_data_dir: artifacts/data_transformation/international_stocks
+  silk_data_dir: artifacts/data_ingestion/pakistan_stocks/raw_data/SILK.csv 
+  pace_data_dir: artifacts/data_ingestion/pakistan_stocks/raw_data/PACE.csv
+  fauji_data_dir: artifacts/data_ingestion/pakistan_stocks/raw_data/FFL.csv
+  punjab_data_dir: artifacts/data_ingestion/pakistan_stocks/raw_data/BOP.csv
+  transformed_silk_data_dir: artifacts/data_transformation/pakistan_stocks
+  transformed_pace_data_dir: artifacts/data_transformation/pakistan_stocks
+  transformed_fauji_data_dir: artifacts/data_transformation/pakistan_stocks
+  transformed_punjab_data_dir: artifacts/data_transformation/pakistan_stocks
   
 
 model_trainer:
   root_dir: artifacts/model_trainer
-  apple_transformed_data_dir: artifacts/data_transformation/transformed_data/apple_data/transformed_apple.csv
-  amazon_transformed_data_dir: artifacts/data_transformation/transformed_data/amazon_data/transformed_amazon.csv
-  google_transformed_data_dir: artifacts/data_transformation/transformed_data/google_data/transformed_google.csv
-  microsoft_transformed_data_dir: artifacts/data_transformation/transformed_data/microsoft_data/transformed_microsoft.csv
+  apple_transformed_data_dir: artifacts/data_transformation/international_stocks/transformed_apple.csv
+  amazon_transformed_data_dir: artifacts/data_transformation/international_stocks/transformed_amazon.csv
+  google_transformed_data_dir: artifacts/data_transformation/international_stocks/transformed_google.csv
+  microsoft_transformed_data_dir: artifacts/data_transformation/international_stocks/transformed_microsoft.csv
+  silk_transformed_data_dir: artifacts/data_transformation/pakistan_stocks/transformed_silk.csv
+  pace_transformed_data_dir: artifacts/data_transformation/pakistan_stocks/transformed_pace.csv
+  fauji_transformed_data_dir: artifacts/data_transformation/pakistan_stocks/transformed_fauji.csv
+  punjab_transformed_data_dir: artifacts/data_transformation/pakistan_stocks/transformed_punjab.csv
   apple_model_name: apple_model.keras
   amazon_model_name: amazon_model.keras
   google_model_name: google_model.keras
   microsoft_model_name: microsoft_model.keras
+  silk_model_name: silk_model.keras
+  pace_model_name: pace_model.keras
+  fauji_model_name: fauji_model.keras
+  punjab_model_name: punjab_model.keras

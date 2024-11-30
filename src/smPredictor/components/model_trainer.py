@@ -104,3 +104,100 @@ class ModelTrainer:
         microsoft_model.compile(optimizer=self.config.optimizer, loss=self.config.loss)
         microsoft_model.fit(microsoft_x_train, microsoft_y_train, batch_size=self.config.batch_size, epochs=self.config.epochs)
         microsoft_model.save(os.path.join(self.config.root_dir, self.config.microsoft_model_name))  # Save model
+        
+        # Training of Silk Bank Model
+        silk_df = pd.read_csv(self.config.silk_transformed_data_dir)
+        silk_df = silk_df.astype(float)  # Ensure numeric data
+        silk_x_train = []
+        silk_y_train = []
+        for i in range(60, len(silk_df)):
+            silk_x_train.append(silk_df.iloc[i-60:i, 0].values)
+            silk_y_train.append(silk_df.iloc[i, 0])
+            if i <= 61:
+                print(silk_x_train)
+                print(silk_y_train)
+                print()
+        silk_x_train, silk_y_train = np.array(silk_x_train), np.array(silk_y_train)
+        silk_x_train = np.reshape(silk_x_train, (silk_x_train.shape[0], silk_x_train.shape[1], 1))
+        silk_model = Sequential()
+        silk_model.add(LSTM(self.config.layer1, return_sequences=True, input_shape=(silk_x_train.shape[1], 1)))
+        silk_model.add(LSTM(self.config.layer2, return_sequences=False))
+        silk_model.add(Dense(self.config.layer3))
+        silk_model.add(Dense(self.config.layer4))
+        silk_model.compile(optimizer=self.config.optimizer, loss=self.config.loss)
+        silk_model.fit(silk_x_train, silk_y_train, batch_size=self.config.batch_size, epochs=self.config.epochs)
+        silk_model.save(os.path.join(self.config.root_dir, self.config.silk_model_name))  # Save model
+        
+        # Training of Pace Pakistan Model
+        pace_df = pd.read_csv(self.config.pace_transformed_data_dir)
+        pace_df = pace_df.astype(float)  # Ensure numeric data
+        pace_x_train = []
+        pace_y_train = []
+        for i in range(60, len(pace_df)):
+            pace_x_train.append(pace_df.iloc[i-60:i, 0].values)
+            pace_y_train.append(pace_df.iloc[i, 0])
+            if i <= 61:
+                print(pace_x_train)
+                print(pace_y_train)
+                print()
+        pace_x_train, pace_y_train = np.array(pace_x_train), np.array(pace_y_train)
+        pace_x_train = np.reshape(pace_x_train, (pace_x_train.shape[0], pace_x_train.shape[1], 1))
+        pace_model = Sequential()
+        pace_model.add(LSTM(self.config.layer1, return_sequences=True, input_shape=(pace_x_train.shape[1], 1)))
+        pace_model.add(LSTM(self.config.layer2, return_sequences=False))
+        pace_model.add(Dense(self.config.layer3))
+        pace_model.add(Dense(self.config.layer4))
+        pace_model.compile(optimizer=self.config.optimizer, loss=self.config.loss)
+        pace_model.fit(pace_x_train, pace_y_train, batch_size=self.config.batch_size, epochs=self.config.epochs)
+        pace_model.save(os.path.join(self.config.root_dir, self.config.pace_model_name))  # Save model
+        
+        # Training of Fauji Foods Model
+        fauji_df = pd.read_csv(self.config.fauji_transformed_data_dir)
+        fauji_df = fauji_df.astype(float)  # Ensure numeric data
+        fauji_x_train = []
+        fauji_y_train = []
+        for i in range(60, len(fauji_df)):
+            fauji_x_train.append(fauji_df.iloc[i-60:i, 0].values)
+            fauji_y_train.append(fauji_df.iloc[i, 0])
+            if i <= 61:
+                print(fauji_x_train)
+                print(fauji_y_train)
+                print()
+        fauji_x_train, fauji_y_train = np.array(fauji_x_train), np.array(fauji_y_train)
+        fauji_x_train = np.reshape(fauji_x_train, (fauji_x_train.shape[0], fauji_x_train.shape[1], 1))
+        fauji_model = Sequential()
+        fauji_model.add(LSTM(self.config.layer1, return_sequences=True, input_shape=(fauji_x_train.shape[1], 1)))
+        fauji_model.add(LSTM(self.config.layer2, return_sequences=False))
+        fauji_model.add(Dense(self.config.layer3))
+        fauji_model.add(Dense(self.config.layer4))
+        fauji_model.compile(optimizer=self.config.optimizer, loss=self.config.loss)
+        fauji_model.fit(fauji_x_train, fauji_y_train, batch_size=self.config.batch_size, epochs=self.config.epochs)
+        fauji_model.save(os.path.join(self.config.root_dir, self.config.fauji_model_name))  # Save model
+        
+        # Training of Bank of Punjab Model
+        punjab_df = pd.read_csv(self.config.punjab_transformed_data_dir)
+        punjab_df = punjab_df.astype(float)  # Ensure numeric data
+        punjab_x_train = []
+        punjab_y_train = []
+        for i in range(60, len(punjab_df)):
+            punjab_x_train.append(punjab_df.iloc[i-60:i, 0].values)
+            punjab_y_train.append(punjab_df.iloc[i, 0])
+            if i <= 61:
+                print(punjab_x_train)
+                print(punjab_y_train)
+                print()
+        punjab_x_train, punjab_y_train = np.array(punjab_x_train), np.array(punjab_y_train)
+        punjab_x_train = np.reshape(punjab_x_train, (punjab_x_train.shape[0], punjab_x_train.shape[1], 1))
+        punjab_model = Sequential()
+        punjab_model.add(LSTM(self.config.layer1, return_sequences=True, input_shape=(punjab_x_train.shape[1], 1)))
+        punjab_model.add(LSTM(self.config.layer2, return_sequences=False))
+        punjab_model.add(Dense(self.config.layer3))
+        punjab_model.add(Dense(self.config.layer4))
+        punjab_model.compile(optimizer=self.config.optimizer, loss=self.config.loss)
+        punjab_model.fit(punjab_x_train, punjab_y_train, batch_size=self.config.batch_size, epochs=self.config.epochs)
+        punjab_model.save(os.path.join(self.config.root_dir, self.config.punjab_model_name))  # Save model
+
+
+
+
+

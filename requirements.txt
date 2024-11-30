@@ -18,4 +18,5 @@ types-pyYAML
 Flask 
 Flask-Cors
 scipy
+psx-data-reader
 -e .

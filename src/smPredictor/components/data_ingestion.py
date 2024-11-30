@@ -2,10 +2,10 @@ import os
 import yfinance as yf
 from pandas_datareader.data import DataReader
 from pandas_datareader import data as pdr
-from datetime import datetime
+from datetime import datetime, date
 from smPredictor import logger
+from psx import stocks
 from smPredictor.entity.config_entity import DataIngestionConfig
-
 
 
 class DataIngestion:
@@ -13,43 +13,63 @@ class DataIngestion:
         self.config = config
         
     def get_data(self):
-        # Ensure the local data directory and all subdirectories exist
-        os.makedirs(self.config.local_data_dir, exist_ok=True)
+        os.makedirs(self.config.internationalStocks_local_data_dir, exist_ok=True)
+        os.makedirs(self.config.pakistanStocks_local_data_dir, exist_ok=True)
 
-        # Parse tickers, start_date, and end_date from the config
-        tickers = self.config.tickers
+        itickers = self.config.itickers
+        ptickers = self.config.ptickers
         
-        # Validate tickers to ensure it is a list
-        if not isinstance(tickers, list):
-            raise ValueError("Tickers should be a list.")
+        # Validate tickers to ensure they are lists
+        if not isinstance(itickers, list):
+            raise ValueError("International Tickers should be a list.")
+        if not isinstance(ptickers, list):
+            raise ValueError("Pakistan Tickers should be a list.")
 
-        start_date = self.config.start_date
-        
-        # Convert 'now' to current date if 'end_date' is 'now'
-        end_date = (
+        istart_date = self.config.istart_date
+        iend_date = (
             datetime.now().strftime("%Y-%m-%d") 
-            if self.config.end_date.lower() == "now" 
-            else self.config.end_date
+            if isinstance(self.config.iend_date, str) and self.config.iend_date.lower() == "now"
+            else self.config.iend_date
         )
 
-        # Download stock data for each ticker
-        for ticker in tickers:
+        # Download stock data for International tickers
+        for iticker in itickers:
             try:
-                print(f"Downloading data for {ticker}...")
-                # Fetch the stock data using yfinance
-                data = yf.download(ticker, start=start_date, end=end_date)
-
-                # Check if data is empty
-                if data.empty:
-                    print(f"No data found for {ticker}. Skipping.")
+                print(f"Downloading data for {iticker}...")
+                idata = yf.download(iticker, start=istart_date, end=iend_date)
+                if idata.empty:
+                    print(f"No data found for {iticker}. Skipping.")
                     continue
-
-                # Ensure the directory for each stock exists
-                file_path = os.path.join(self.config.local_data_dir, f"{ticker}.csv")
-                
-                # Save the data to a CSV file
-                data.to_csv(file_path)
-                print(f"Saved data for {ticker} to {file_path}")
-
+                ifile_path = os.path.join(self.config.internationalStocks_local_data_dir, f"{iticker}.csv")
+                idata.to_csv(ifile_path)
+                print(f"Saved data for {iticker} to {ifile_path}")
             except Exception as e:
-                print(f"Failed to download data for {ticker}: {e}")
+                print(f"Failed to download data for {iticker}: {e}")
+        
+        # Handle date parsing for Pakistani tickers
+        pstart_date = (
+            self.config.pstart_date
+            if isinstance(self.config.pstart_date, date)
+            else datetime.strptime(self.config.pstart_date, "%Y-%m-%d").date()
+        )
+        pend_date = (
+            date.today()
+            if isinstance(self.config.pend_date, str) and self.config.pend_date.lower() == "now"
+            else self.config.pend_date
+            if isinstance(self.config.pend_date, date)
+            else datetime.strptime(self.config.pend_date, "%Y-%m-%d").date()
+        )
+
+        # Download stock data for Pakistani tickers
+        for pticker in ptickers:
+            try:
+                print(f"Downloading data for {pticker}...")
+                pdata = stocks(pticker, start=pstart_date, end=pend_date)
+                if pdata.empty:
+                    print(f"No data found for {pticker}. Skipping.")
+                    continue
+                pfile_path = os.path.join(self.config.pakistanStocks_local_data_dir, f"{pticker}.csv")
+                pdata.to_csv(pfile_path)
+                print(f"Saved data for {pticker} to {pfile_path}")
+            except Exception as e:
+                print(f"Failed to download data for {pticker}: {e}")
