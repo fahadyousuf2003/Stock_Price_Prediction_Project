@@ -1,0 +1,100 @@
+stages:
+  data_ingestion:
+    cmd: python src/smPredictor/pipeline/stage_01_data_ingestion.py
+    deps:
+      - src/smPredictor/pipeline/stage_01_data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion/international_stocks/raw_data/AAPL.csv
+      - artifacts/data_ingestion/international_stocks/raw_data/AMZN.csv
+      - artifacts/data_ingestion/international_stocks/raw_data/GOOG.csv
+      - artifacts/data_ingestion/international_stocks/raw_data/MSFT.csv
+      - artifacts/data_ingestion/pakistan_stocks/raw_data/BOP.csv
+      - artifacts/data_ingestion/pakistan_stocks/raw_data/FFL.csv
+      - artifacts/data_ingestion/pakistan_stocks/raw_data/PACE.csv
+      - artifacts/data_ingestion/pakistan_stocks/raw_data/SILK.csv
+
+
+  data_transformation:
+    cmd: python src/smPredictor/pipeline/stage_02_data_transformation.py
+    deps:
+      - src/smPredictor/pipeline/stage_02_data_transformation.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_transformation/international_stocks/transformed_amazon.csv
+      - artifacts/data_transformation/international_stocks/transformed_apple.csv
+      - artifacts/data_transformation/international_stocks/transformed_google.csv
+      - artifacts/data_transformation/international_stocks/transformed_microsoft.csv
+      - artifacts/data_transformation/pakistan_stocks/transformed_fauji.csv
+      - artifacts/data_transformation/pakistan_stocks/transformed_pace.csv
+      - artifacts/data_transformation/pakistan_stocks/transformed_punjab.csv
+      - artifacts/data_transformation/pakistan_stocks/transformed_silk.csv
+      
+
+
+
+  model_trainer:
+    cmd: python src/smPredictor/pipeline/stage_03_model_trainer.py
+    deps:
+      - src/smPredictor/pipeline/stage_03_model_trainer.py
+      - config/config.yaml
+      - artifacts/data_transformation/international_stocks/transformed_amazon.csv
+      - artifacts/data_transformation/international_stocks/transformed_apple.csv
+      - artifacts/data_transformation/international_stocks/transformed_google.csv
+      - artifacts/data_transformation/international_stocks/transformed_microsoft.csv
+      - artifacts/data_transformation/pakistan_stocks/transformed_fauji.csv
+      - artifacts/data_transformation/pakistan_stocks/transformed_pace.csv
+      - artifacts/data_transformation/pakistan_stocks/transformed_punjab.csv
+      - artifacts/data_transformation/pakistan_stocks/transformed_silk.csv
+    params:
+      - layer1
+      - layer2
+      - layer3
+      - layer4
+      - optimizer
+      - loss
+      - batch_size
+      - epochs
+    outs:
+      - artifacts/model_trainer/amazon_model.keras
+      - artifacts/model_trainer/apple_model.keras
+      - artifacts/model_trainer/google_model.keras
+      - artifacts/model_trainer/microsoft_model.keras
+      - artifacts/model_trainer/fauji_model.keras
+      - artifacts/model_trainer/punjab_model.keras
+      - artifacts/model_trainer/silk_model.keras
+      - artifacts/model_trainer/pace_model.keras
+
+
+  
+
+  evaluation:
+    cmd: python src/smPredictor/pipeline/stage_04_evaluation.py
+    deps:
+      - src/smPredictor/pipeline/stage_04_evaluation.py
+      - config/config.yaml
+      - artifacts/data_ingestion/international_stocks/raw_data/AAPL.csv
+      - artifacts/data_ingestion/international_stocks/raw_data/AMZN.csv
+      - artifacts/data_ingestion/international_stocks/raw_data/GOOG.csv
+      - artifacts/data_ingestion/international_stocks/raw_data/MSFT.csv
+      - artifacts/data_ingestion/pakistan_stocks/raw_data/BOP.csv
+      - artifacts/data_ingestion/pakistan_stocks/raw_data/FFL.csv
+      - artifacts/data_ingestion/pakistan_stocks/raw_data/PACE.csv
+      - artifacts/data_ingestion/pakistan_stocks/raw_data/SILK.csv
+      - artifacts/model_trainer/amazon_model.keras
+      - artifacts/model_trainer/apple_model.keras
+      - artifacts/model_trainer/google_model.keras
+      - artifacts/model_trainer/microsoft_model.keras
+      - artifacts/model_trainer/fauji_model.keras
+      - artifacts/model_trainer/punjab_model.keras
+      - artifacts/model_trainer/silk_model.keras
+      - artifacts/model_trainer/pace_model.keras
+    outs:
+      - artifacts/model_rmse/amazon_rmse.json
+      - artifacts/model_rmse/apple_rmse.json
+      - artifacts/model_rmse/fauji_rmse.json
+      - artifacts/model_rmse/google_rmse.json
+      - artifacts/model_rmse/microsoft_rmse.json
+      - artifacts/model_rmse/pace_rmse.json
+      - artifacts/model_rmse/punjab_rmse.json
+      - artifacts/model_rmse/silk_rmse.json
