@@ -73,3 +73,7 @@ class DataIngestion:
                 print(f"Saved data for {pticker} to {pfile_path}")
             except Exception as e:
                 print(f"Failed to download data for {pticker}: {e}")
+        
+        # Update timestamp
+        with open("artifacts/data_ingestion/stocks_timestamp.txt", "w") as f:
+            f.write(datetime.now().strftime('%Y-%m-%d'))
