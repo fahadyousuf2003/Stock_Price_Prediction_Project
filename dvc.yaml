@@ -94,11 +94,11 @@ stages:
       - artifacts/model_trainer/silk_model.keras
       - artifacts/model_trainer/pace_model.keras
     outs:
-      - artifacts/model_rmse/amazon_rmse.json
-      - artifacts/model_rmse/apple_rmse.json
-      - artifacts/model_rmse/fauji_rmse.json
-      - artifacts/model_rmse/google_rmse.json
-      - artifacts/model_rmse/microsoft_rmse.json
-      - artifacts/model_rmse/pace_rmse.json
-      - artifacts/model_rmse/punjab_rmse.json
-      - artifacts/model_rmse/silk_rmse.json
+      - artifacts/model_metrics/amazon_metrics.json
+      - artifacts/model_metrics/apple_metrics.json
+      - artifacts/model_metrics/fauji_metrics.json
+      - artifacts/model_metrics/google_metrics.json
+      - artifacts/model_metrics/microsoft_metrics.json
+      - artifacts/model_metrics/pace_metrics.json
+      - artifacts/model_metrics/punjab_metrics.json
+      - artifacts/model_metrics/silk_metrics.json

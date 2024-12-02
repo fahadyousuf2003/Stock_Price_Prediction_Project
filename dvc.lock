@@ -14,8 +14,8 @@ stages:
     outs:
     - path: artifacts/data_ingestion/international_stocks/raw_data/AAPL.csv
       hash: md5
-      md5: 03597e4c860989328eb3cd86b1b03161
-      size: 361858
+      md5: c8ffe242fde8781fbc9cbc60d915b2e8
+      size: 361789
     - path: artifacts/data_ingestion/international_stocks/raw_data/AMZN.csv
       hash: md5
       md5: de34639002c74def9bfa50e2bd9157ad
@@ -26,8 +26,8 @@ stages:
       size: 363000
     - path: artifacts/data_ingestion/international_stocks/raw_data/MSFT.csv
       hash: md5
-      md5: 357e55ff6794503192f4c029eff6c228
-      size: 356584
+      md5: 4241c914faebcdf03bb36f048f899092
+      size: 356574
     - path: artifacts/data_ingestion/pakistan_stocks/raw_data/BOP.csv
       hash: md5
       md5: 03542026179a52448003f8e72e083483
@@ -156,43 +156,43 @@ stages:
     outs:
     - path: artifacts/model_trainer/amazon_model.keras
       hash: md5
-      md5: 255c3715c6bfded96e9e2b711fd4a902
+      md5: fc78db71c86bfe76da479c4f25b74665
       size: 1448912
     - path: artifacts/model_trainer/apple_model.keras
       hash: md5
-      md5: 75b3e1b750e85d87109c72e344dc9acf
+      md5: c1c009052fb589977ee9a17a9b515f10
       size: 1448904
     - path: artifacts/model_trainer/fauji_model.keras
       hash: md5
-      md5: afca76d105ae61548006c74575593273
+      md5: 61d114fe952edf5e082f0193ec95f98d
       size: 1448916
     - path: artifacts/model_trainer/google_model.keras
       hash: md5
-      md5: 815fc565b57a7e653586462f079da663
+      md5: 27b250a5eca73f5629284302b8c9a806
       size: 1448912
     - path: artifacts/model_trainer/microsoft_model.keras
       hash: md5
-      md5: b515c9e805b3d3b8d9db68cd4f5f3d1b
+      md5: 6a0012a23966e7d9d8a7eea9102cd982
       size: 1448912
     - path: artifacts/model_trainer/pace_model.keras
       hash: md5
-      md5: 0ecc274a2121d267f8a490714048e856
+      md5: 097270af35f6ac5589ac8edb1d4a8beb
       size: 1448916
     - path: artifacts/model_trainer/punjab_model.keras
       hash: md5
-      md5: 6d504397ef4e8c386805c1412b35573a
+      md5: 4590599541763e75e2363837da73db03
       size: 1448916
     - path: artifacts/model_trainer/silk_model.keras
       hash: md5
-      md5: 5b208bba3eaa02c2efb369c0ca87fcfa
+      md5: 9b53ee6fdfe170f3fbad873b974ae9aa
       size: 1448912
   evaluation:
     cmd: python src/smPredictor/pipeline/stage_04_evaluation.py
     deps:
     - path: artifacts/data_ingestion/international_stocks/raw_data/AAPL.csv
       hash: md5
-      md5: 03597e4c860989328eb3cd86b1b03161
-      size: 361858
+      md5: c8ffe242fde8781fbc9cbc60d915b2e8
+      size: 361789
     - path: artifacts/data_ingestion/international_stocks/raw_data/AMZN.csv
       hash: md5
       md5: de34639002c74def9bfa50e2bd9157ad
@@ -203,8 +203,8 @@ stages:
       size: 363000
     - path: artifacts/data_ingestion/international_stocks/raw_data/MSFT.csv
       hash: md5
-      md5: 357e55ff6794503192f4c029eff6c228
-      size: 356584
+      md5: 4241c914faebcdf03bb36f048f899092
+      size: 356574
     - path: artifacts/data_ingestion/pakistan_stocks/raw_data/BOP.csv
       hash: md5
       md5: 03542026179a52448003f8e72e083483
@@ -227,35 +227,35 @@ stages:
       size: 10
     - path: artifacts/model_trainer/amazon_model.keras
       hash: md5
-      md5: 255c3715c6bfded96e9e2b711fd4a902
+      md5: fc78db71c86bfe76da479c4f25b74665
       size: 1448912
     - path: artifacts/model_trainer/apple_model.keras
       hash: md5
-      md5: 75b3e1b750e85d87109c72e344dc9acf
+      md5: c1c009052fb589977ee9a17a9b515f10
       size: 1448904
     - path: artifacts/model_trainer/fauji_model.keras
       hash: md5
-      md5: afca76d105ae61548006c74575593273
+      md5: 61d114fe952edf5e082f0193ec95f98d
       size: 1448916
     - path: artifacts/model_trainer/google_model.keras
       hash: md5
-      md5: 815fc565b57a7e653586462f079da663
+      md5: 27b250a5eca73f5629284302b8c9a806
       size: 1448912
     - path: artifacts/model_trainer/microsoft_model.keras
       hash: md5
-      md5: b515c9e805b3d3b8d9db68cd4f5f3d1b
+      md5: 6a0012a23966e7d9d8a7eea9102cd982
       size: 1448912
     - path: artifacts/model_trainer/pace_model.keras
       hash: md5
-      md5: 0ecc274a2121d267f8a490714048e856
+      md5: 097270af35f6ac5589ac8edb1d4a8beb
       size: 1448916
     - path: artifacts/model_trainer/punjab_model.keras
       hash: md5
-      md5: 6d504397ef4e8c386805c1412b35573a
+      md5: 4590599541763e75e2363837da73db03
       size: 1448916
     - path: artifacts/model_trainer/silk_model.keras
       hash: md5
-      md5: 5b208bba3eaa02c2efb369c0ca87fcfa
+      md5: 9b53ee6fdfe170f3fbad873b974ae9aa
       size: 1448912
     - path: config/config.yaml
       hash: md5
@@ -266,35 +266,35 @@ stages:
       md5: 0203ba6740ead2ecbb341f96090b2695
       size: 836
     outs:
-    - path: artifacts/model_rmse/amazon_rmse.json
+    - path: artifacts/model_metrics/amazon_metrics.json
       hash: md5
-      md5: 69ac4512e38001f8227cfb314ae0b72b
-      size: 35
-    - path: artifacts/model_rmse/apple_rmse.json
+      md5: 49eb909e18c7f9d16484d530b7046ada
+      size: 168
+    - path: artifacts/model_metrics/apple_metrics.json
       hash: md5
-      md5: 83775f10a25c2a80e3fb33addfba2ea9
-      size: 35
-    - path: artifacts/model_rmse/fauji_rmse.json
+      md5: cfba692f53985696a7e9189b2eeeae89
+      size: 167
+    - path: artifacts/model_metrics/fauji_metrics.json
       hash: md5
-      md5: 44a15be39cbdaa33eefa9ae169a4aac1
-      size: 37
-    - path: artifacts/model_rmse/google_rmse.json
+      md5: d96f1bea8fc2934814c7c845cfbabda4
+      size: 170
+    - path: artifacts/model_metrics/google_metrics.json
       hash: md5
-      md5: 038da12795bfb342d501ef6eafa85c38
-      size: 36
-    - path: artifacts/model_rmse/microsoft_rmse.json
+      md5: 8027c44022c1d0000da2f7033974899b
+      size: 166
+    - path: artifacts/model_metrics/microsoft_metrics.json
       hash: md5
-      md5: a493c0cb001af6d9bc0ffd159a7c8669
-      size: 35
-    - path: artifacts/model_rmse/pace_rmse.json
+      md5: d05a52f80b6ee47ec16241a67c222a07
+      size: 168
+    - path: artifacts/model_metrics/pace_metrics.json
       hash: md5
-      md5: 271b9507ac7f21239315313016fbfe26
-      size: 37
-    - path: artifacts/model_rmse/punjab_rmse.json
+      md5: 2d46f3e3d18ba923eb9c44735dd77d79
+      size: 171
+    - path: artifacts/model_metrics/punjab_metrics.json
       hash: md5
-      md5: ca60420ad0388e90e26b5e2988b9da26
-      size: 37
-    - path: artifacts/model_rmse/silk_rmse.json
+      md5: 03d104c24c1dd758b66c873480e1250f
+      size: 168
+    - path: artifacts/model_metrics/silk_metrics.json
       hash: md5
-      md5: 16bf581c73b2938a68c0b9898dea8bc9
-      size: 37
+      md5: 1d97a3e465b9ff7991a4e0177512db3b
+      size: 172

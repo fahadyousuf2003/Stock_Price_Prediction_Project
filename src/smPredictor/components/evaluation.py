@@ -8,6 +8,7 @@ from pathlib import Path
 import os
 from smPredictor import logger
 from smPredictor.entity.config_entity import EvaluationConfig
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 from smPredictor.utils.common import save_json
 
 class Evaluation:
@@ -16,11 +17,11 @@ class Evaluation:
     
     def create_rmse_directory(self):
         # Create the model_rmse directory if it doesn't exist
-        rmse_dir = Path("artifacts/model_rmse")
+        rmse_dir = Path("artifacts/model_metrics")
         rmse_dir.mkdir(parents=True, exist_ok=True)
         
     def evaluate(self):
-        # Load all the models
+        # Load Models
         apple_model = tf.keras.models.load_model("artifacts/model_trainer/apple_model.keras")
         amazon_model = tf.keras.models.load_model("artifacts/model_trainer/amazon_model.keras")
         google_model = tf.keras.models.load_model("artifacts/model_trainer/google_model.keras")
@@ -29,7 +30,7 @@ class Evaluation:
         pace_model = tf.keras.models.load_model("artifacts/model_trainer/pace_model.keras")
         fauji_model = tf.keras.models.load_model("artifacts/model_trainer/fauji_model.keras")
         punjab_model = tf.keras.models.load_model("artifacts/model_trainer/punjab_model.keras")
-                
+
         # Evaluate Apple Model on Test Data
         apple_scaler = MinMaxScaler(feature_range=(0, 1))
         apple_raw_data = pd.read_csv(self.config.apple_raw_data_dir)
@@ -50,8 +51,14 @@ class Evaluation:
         apple_x_test = np.reshape(apple_x_test, (apple_x_test.shape[0], apple_x_test.shape[1], 1))
         apple_predictions = apple_model.predict(apple_x_test)
         apple_predictions = apple_scaler.inverse_transform(apple_predictions)
-        apple_rmse = np.sqrt(np.mean((apple_predictions - apple_y_test) ** 2))
-        save_json(path=Path("artifacts/model_rmse/apple_rmse.json"), data={"RMSE": apple_rmse})
+        # Calculate evaluation metrics
+        apple_mae = mean_absolute_error(apple_y_test, apple_predictions)
+        apple_mse = mean_squared_error(apple_y_test, apple_predictions)
+        apple_rmse = np.sqrt(apple_mse)
+        apple_mape = np.mean(np.abs((apple_y_test - apple_predictions) / apple_y_test)) * 100
+        apple_accuracy = 100 - apple_mape
+        save_json(path=Path("artifacts/model_metrics/apple_metrics.json"), data={"MAE": apple_mae, "MSE": apple_mae, "RMSE": apple_rmse , "MAPE": apple_mape, "Accuracy": apple_accuracy})
+        
         
         # Evaluate Amazon Model on Test Data
         amazon_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -73,8 +80,13 @@ class Evaluation:
         amazon_x_test = np.reshape(amazon_x_test, (amazon_x_test.shape[0], amazon_x_test.shape[1], 1))
         amazon_predictions = amazon_model.predict(amazon_x_test)
         amazon_predictions = amazon_scaler.inverse_transform(amazon_predictions)
-        amazon_rmse = np.sqrt(np.mean((amazon_predictions - amazon_y_test) ** 2))
-        save_json(path=Path("artifacts/model_rmse/amazon_rmse.json"), data={"RMSE": amazon_rmse})
+        amazon_mae = mean_absolute_error(amazon_y_test, amazon_predictions)
+        amazon_mse = mean_squared_error(amazon_y_test, amazon_predictions)
+        amazon_rmse = np.sqrt(amazon_mse)
+        amazon_mape = np.mean(np.abs((amazon_y_test - amazon_predictions) / amazon_y_test)) * 100
+        amazon_accuracy = 100 - amazon_mape
+        save_json(path=Path("artifacts/model_metrics/amazon_metrics.json"), data={"MAE": amazon_mae, "MSE": amazon_mae, "RMSE": amazon_rmse , "MAPE": amazon_mape, "Accuracy": amazon_accuracy})
+
         
         # Evaluate Google Model on Test Data
         google_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -96,8 +108,13 @@ class Evaluation:
         google_x_test = np.reshape(google_x_test, (google_x_test.shape[0], google_x_test.shape[1], 1))
         google_predictions = google_model.predict(google_x_test)
         google_predictions = google_scaler.inverse_transform(google_predictions)
-        google_rmse = np.sqrt(np.mean((google_predictions - google_y_test) ** 2))
-        save_json(path=Path("artifacts/model_rmse/google_rmse.json"), data={"RMSE": google_rmse})
+        google_mae = mean_absolute_error(google_y_test, google_predictions)
+        google_mse = mean_squared_error(google_y_test, google_predictions)
+        google_rmse = np.sqrt(google_mse)
+        google_mape = np.mean(np.abs((google_y_test - google_predictions) / google_y_test)) * 100
+        google_accuracy = 100 - google_mape
+        save_json(path=Path("artifacts/model_metrics/google_metrics.json"), data={"MAE": google_mae, "MSE": google_mae, "RMSE": google_rmse , "MAPE": google_mape, "Accuracy": google_accuracy})
+
         
         # Evaluate Microsoft Model on Test Data
         microsoft_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -119,8 +136,13 @@ class Evaluation:
         microsoft_x_test = np.reshape(microsoft_x_test, (microsoft_x_test.shape[0], microsoft_x_test.shape[1], 1))
         microsoft_predictions = microsoft_model.predict(microsoft_x_test)
         microsoft_predictions = microsoft_scaler.inverse_transform(microsoft_predictions)
-        microsoft_rmse = np.sqrt(np.mean((microsoft_predictions - microsoft_y_test) ** 2))
-        save_json(path=Path("artifacts/model_rmse/microsoft_rmse.json"), data={"RMSE": microsoft_rmse})
+        microsoft_mae = mean_absolute_error(microsoft_y_test, microsoft_predictions)
+        microsoft_mse = mean_squared_error(microsoft_y_test, microsoft_predictions)
+        microsoft_rmse = np.sqrt(microsoft_mse)
+        microsoft_mape = np.mean(np.abs((microsoft_y_test - microsoft_predictions) / microsoft_y_test)) * 100
+        microsoft_accuracy = 100 - microsoft_mape
+        save_json(path=Path("artifacts/model_metrics/microsoft_metrics.json"), data={"MAE": microsoft_mae, "MSE": microsoft_mae, "RMSE": microsoft_rmse , "MAPE": microsoft_mape, "Accuracy": microsoft_accuracy})
+
         
         # Evaluate Silk Model on Test Data
         silk_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -140,8 +162,13 @@ class Evaluation:
         silk_x_test = np.reshape(silk_x_test, (silk_x_test.shape[0], silk_x_test.shape[1], 1))
         silk_predictions = silk_model.predict(silk_x_test)
         silk_predictions = silk_scaler.inverse_transform(silk_predictions)
-        silk_rmse = np.sqrt(np.mean((silk_predictions - silk_y_test) ** 2))
-        save_json(path=Path("artifacts/model_rmse/silk_rmse.json"), data={"RMSE": silk_rmse})
+        silk_mae = mean_absolute_error(silk_y_test, silk_predictions)
+        silk_mse = mean_squared_error(silk_y_test, silk_predictions)
+        silk_rmse = np.sqrt(silk_mse)
+        silk_mape = np.mean(np.abs((silk_y_test - silk_predictions) / silk_y_test)) * 100
+        silk_accuracy = 100 - silk_mape
+        save_json(path=Path("artifacts/model_metrics/silk_metrics.json"), data={"MAE": silk_mae, "MSE": silk_mae, "RMSE": silk_rmse , "MAPE": silk_mape, "Accuracy": silk_accuracy})
+
         
         # Evaluate Pace Model on Test Data
         pace_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -161,8 +188,13 @@ class Evaluation:
         pace_x_test = np.reshape(pace_x_test, (pace_x_test.shape[0], pace_x_test.shape[1], 1))
         pace_predictions = pace_model.predict(pace_x_test)
         pace_predictions = pace_scaler.inverse_transform(pace_predictions)
-        pace_rmse = np.sqrt(np.mean((pace_predictions - pace_y_test) ** 2))
-        save_json(path=Path("artifacts/model_rmse/pace_rmse.json"), data={"RMSE": pace_rmse})
+        pace_mae = mean_absolute_error(pace_y_test, pace_predictions)
+        pace_mse = mean_squared_error(pace_y_test, pace_predictions)
+        pace_rmse = np.sqrt(pace_mse)
+        pace_mape = np.mean(np.abs((pace_y_test - pace_predictions) / pace_y_test)) * 100
+        pace_accuracy = 100 - pace_mape
+        save_json(path=Path("artifacts/model_metrics/pace_metrics.json"), data={"MAE": pace_mae, "MSE": pace_mae, "RMSE": pace_rmse , "MAPE": pace_mape, "Accuracy": pace_accuracy})
+
         
         # Evaluate Fauji Model on Test Data
         fauji_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -182,8 +214,13 @@ class Evaluation:
         fauji_x_test = np.reshape(fauji_x_test, (fauji_x_test.shape[0], fauji_x_test.shape[1], 1))
         fauji_predictions = fauji_model.predict(fauji_x_test)
         fauji_predictions = fauji_scaler.inverse_transform(fauji_predictions)
-        fauji_rmse = np.sqrt(np.mean((fauji_predictions - fauji_y_test) ** 2))
-        save_json(path=Path("artifacts/model_rmse/fauji_rmse.json"), data={"RMSE": fauji_rmse})
+        fauji_mae = mean_absolute_error(fauji_y_test, fauji_predictions)
+        fauji_mse = mean_squared_error(fauji_y_test, fauji_predictions)
+        fauji_rmse = np.sqrt(fauji_mse)
+        fauji_mape = np.mean(np.abs((fauji_y_test - fauji_predictions) / fauji_y_test)) * 100
+        fauji_accuracy = 100 - fauji_mape
+        save_json(path=Path("artifacts/model_metrics/fauji_metrics.json"), data={"MAE": fauji_mae, "MSE": fauji_mae, "RMSE": fauji_rmse , "MAPE": fauji_mape, "Accuracy": fauji_accuracy})
+
         
         # Evaluate Punjab Model on Test Data
         punjab_scaler = MinMaxScaler(feature_range=(0, 1))
@@ -203,8 +240,13 @@ class Evaluation:
         punjab_x_test = np.reshape(punjab_x_test, (punjab_x_test.shape[0], punjab_x_test.shape[1], 1))
         punjab_predictions = punjab_model.predict(punjab_x_test)
         punjab_predictions = punjab_scaler.inverse_transform(punjab_predictions)
-        punjab_rmse = np.sqrt(np.mean((punjab_predictions - punjab_y_test) ** 2))
-        save_json(path=Path("artifacts/model_rmse/punjab_rmse.json"), data={"RMSE": punjab_rmse})
+        punjab_mae = mean_absolute_error(punjab_y_test, punjab_predictions)
+        punjab_mse = mean_squared_error(punjab_y_test, punjab_predictions)
+        punjab_rmse = np.sqrt(punjab_mse)
+        punjab_mape = np.mean(np.abs((punjab_y_test - punjab_predictions) / punjab_y_test)) * 100
+        punjab_accuracy = 100 - punjab_mape
+        save_json(path=Path("artifacts/model_metrics/punjab_metrics.json"), data={"MAE": punjab_mae, "MSE": punjab_mae, "RMSE": punjab_rmse , "MAPE": punjab_mape, "Accuracy": punjab_accuracy})
+
 
 
 
