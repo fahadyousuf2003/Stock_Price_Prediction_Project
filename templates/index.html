@@ -2,76 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Price Predictor</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script>
-        function updateStocks() {
-            const category = document.getElementById('category').value;
-            const stockSelect = document.getElementById('stock');
-            
-            // Clear existing options
-            stockSelect.innerHTML = '';
-            
-            if (category === 'international') {
-                const intStocks = [
-                    {value: 'apple', text: 'Apple'},
-                    {value: 'amazon', text: 'Amazon'},
-                    {value: 'google', text: 'Google'},
-                    {value: 'microsoft', text: 'Microsoft'}
-                ];
-                
-                intStocks.forEach(stock => {
-                    const option = new Option(stock.text, stock.value);
-                    stockSelect.add(option);
-                });
-            } else {
-                const pkStocks = [
-                    {value: 'silk', text: 'Silk'},
-                    {value: 'pace', text: 'Pace'},
-                    {value: 'fauji', text: 'Fauji'},
-                    {value: 'punjab', text: 'Punjab'}
-                ];
-                
-                pkStocks.forEach(stock => {
-                    const option = new Option(stock.text, stock.value);
-                    stockSelect.add(option);
-                });
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Stock Price Predictor</h1>
-        
-        <form action="/predict" method="post" class="space-y-4">
-            <div>
-                <label class="block mb-2">Category</label>
-                <select id="category" name="category" class="w-full p-2 border rounded" required onchange="updateStocks()">
-                    <option value="international">International</option>
-                    <option value="pakistani">Pakistani</option>
-                </select>
-            </div>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Stock Price Predictor</h1>
             
-            <div>
-                <label class="block mb-2">Stock</label>
-                <select id="stock" name="stock" class="w-full p-2 border rounded" required>
-                    <option value="apple">Apple</option>
-                    <option value="amazon">Amazon</option>
-                    <option value="google">Google</option>
-                    <option value="microsoft">Microsoft</option>
-                </select>
-            </div>
-            
-            <div>
-                <label class="block mb-2">Prediction Days</label>
-                <input type="number" name="days" min="1" max="365" class="w-full p-2 border rounded" placeholder="Enter number of days (1-365)" required>
-            </div>
-            
-            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300">
-                Predict Stock Prices
-            </button>
-        </form>
+            <form action="/predict" method="post">
+                <div class="form-group">
+                    <label>Select Category</label>
+                    <div class="button-group">
+                        <input type="radio" id="international" name="category" value="international" required>
+                        <label for="international" class="button-label">International</label>
+                        
+                        <input type="radio" id="pakistani" name="category" value="pakistani" required>
+                        <label for="pakistani" class="button-label">Pakistani</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Stock</label>
+                    <div class="button-group stock-group">
+                        <input type="radio" id="apple" name="stock" value="apple" required>
+                        <label for="apple" class="button-label">Apple</label>
+                        
+                        <input type="radio" id="amazon" name="stock" value="amazon" required>
+                        <label for="amazon" class="button-label">Amazon</label>
+                        
+                        <input type="radio" id="google" name="stock" value="google" required>
+                        <label for="google" class="button-label">Google</label>
+                        
+                        <input type="radio" id="microsoft" name="stock" value="microsoft" required>
+                        <label for="microsoft" class="button-label">Microsoft</label>
+                    </div>
+                    
+                    <div class="button-group pakistani-stocks" style="display: none;">
+                        <input type="radio" id="silk" name="stock" value="silk">
+                        <label for="silk" class="button-label">Silk Bank</label>
+                        
+                        <input type="radio" id="pace" name="stock" value="pace">
+                        <label for="pace" class="button-label">Pace Pakistan</label>
+                        
+                        <input type="radio" id="fauji" name="stock" value="fauji">
+                        <label for="fauji" class="button-label">Fauji Foods</label>
+                        
+                        <input type="radio" id="punjab" name="stock" value="punjab">
+                        <label for="punjab" class="button-label">Bank of Punjab</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="days">Prediction Days (1-365)</label>
+                    <input 
+                        type="number" 
+                        id="days" 
+                        name="days" 
+                        min="1" 
+                        max="365" 
+                        required 
+                        placeholder="Enter number of days"
+                    >
+                </div>
+
+                <button type="submit" class="predict-button">Predict Stock Prices</button>
+            </form>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const internationalRadio = document.getElementById('international');
+            const pakistaniRadio = document.getElementById('pakistani');
+            const internationalStocks = document.querySelector('.stock-group');
+            const pakistaniStocks = document.querySelector('.pakistani-stocks');
+
+            function toggleStocks() {
+                if (internationalRadio.checked) {
+                    internationalStocks.style.display = 'flex';
+                    pakistaniStocks.style.display = 'none';
+                    
+                    // Reset Pakistani stock selection
+                    document.querySelectorAll('.pakistani-stocks input').forEach(radio => {
+                        radio.checked = false;
+                    });
+                } else {
+                    internationalStocks.style.display = 'none';
+                    pakistaniStocks.style.display = 'flex';
+                    
+                    // Reset International stock selection
+                    document.querySelectorAll('.stock-group input').forEach(radio => {
+                        radio.checked = false;
+                    });
+                }
+            }
+
+            internationalRadio.addEventListener('change', toggleStocks);
+            pakistaniRadio.addEventListener('change', toggleStocks);
+        });
+    </script>
 </body>
 </html>

@@ -1,32 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ category }} {{ stock }} Stock Price Predictions</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category }} {{ stock }} Stock Predictions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>{{ category }} {{ stock }} Stock Price Predictions</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Predicted Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pred in predictions %}
-            <tr>
-                <td>{{ pred['Date'] }}</td>
-                <td>${{ "{:.2f}".format(pred['Predictions']) }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <p><a href="/">Make Another Prediction</a></p>
+    <div class="container">
+        <div class="card">
+            <h1>{{ category.capitalize() }} {{ stock.capitalize() }} Stock Price Predictions</h1>
+            
+            <div class="predictions-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Predicted Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pred in predictions %}
+                        <tr>
+                            <td>{{ pred['Date'] }}</td>
+                            <td>${{ "%.2f"|format(pred['Predictions']) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="predictionChart"></canvas>
+            </div>
+
+            <a href="/" class="predict-button">Make Another Prediction</a>
+        </div>
+    </div>
+
+    <script>
+        const chartData = JSON.parse('{{ predictions | tojson | safe }}');
+        const ctx = document.getElementById('predictionChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.map(item => item.Date),
+                datasets: [{
+                    label: 'Predicted Stock Price',
+                    data: chartData.map(item => item.Predictions),
+                    borderColor: '#703f93',
+                    backgroundColor: 'rgba(112, 63, 147, 0.2)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#7210b9',
+                    pointBorderColor: '#fff',
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    tension: 0.3 // Smoothens the line
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Allows custom height and width
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#fff',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Stock Price Predictions',
+                        color: '#fff',
+                        font: {
+                            size: 20,
+                            weight: 'bold'
+                        }
+                    },
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#fff',
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#fff',
+                            font: {
+                                size: 12
+                            },
+                            callback: (value) => `$${value}` // Adds a dollar sign
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
 </body>
 </html>

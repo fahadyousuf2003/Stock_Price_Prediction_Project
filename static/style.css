@@ -1,0 +1,190 @@
+:root {
+    --primary-color: #703f93;
+    --secondary-color: #7210b9;
+    --background-color: #6b5b95;
+    --text-color: #eef0f2;
+    --card-bg: rgb(41, 37, 37);
+    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    width: 180%; /* Increase width */
+    max-width: 1600px; /* Set a maximum width */
+    margin: 0 auto;
+    position: relative;
+    left: 50%; /* Move the card 50% from the left */
+    transform: translateX(-50%); /* Adjust to center */
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.button-group input[type="radio"] {
+    display: none;
+}
+
+.button-label {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--primary-color);
+    background-color: white;
+    font-weight: 500;
+}
+
+.button-group input[type="radio"]:checked + .button-label {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.predict-button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.predict-button:hover {
+    background-color: #00432e;
+}
+
+.pakistani-stocks {
+    display: none;
+}
+
+.predictions-table {
+    margin: 20px 0;
+    overflow-x: auto; /* Ensures responsiveness on smaller devices */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 8px;
+    overflow: hidden; /* Ensures corners are rounded */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+thead {
+    background-color: var(--primary-color);
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+th, td {
+    padding: 12px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+tbody tr:hover {
+    background-color: var(--secondary-color);
+    color: #fff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+td {
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.9rem;
+    }
+}
+
+.chart-container {
+    width: 100%; /* Take up the full available width */
+    max-width: 1600px; /* Allow for very wide screens */
+    height: 600px; /* Maintain a taller height for proportions */
+    margin: 20px auto; /* Center it horizontally */
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: var(--card-bg);
+    padding: 20px;
+}
+
