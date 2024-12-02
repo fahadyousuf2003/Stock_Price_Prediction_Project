@@ -5,7 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Price Predictor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const internationalBtn = document.querySelector('.button-group input[value="International"]');
+            const pakistaniBtn = document.querySelector('.button-group input[value="Pakistani"]');
+            const internationalStocks = document.querySelector('.stock-group');
+            const pakistaniStocks = document.querySelector('.pakistani-stocks');
+
+            internationalBtn.addEventListener('change', function() {
+                internationalStocks.style.display = 'flex';
+                pakistaniStocks.style.display = 'none';
+            });
+
+            pakistaniBtn.addEventListener('change', function() {
+                internationalStocks.style.display = 'none';
+                pakistaniStocks.style.display = 'flex';
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -19,7 +36,7 @@
                         <input type="radio" id="international" name="category" value="international" required>
                         <label for="international" class="button-label">International</label>
                         
-                        <input type="radio" id="pakistani" name="category" value="pakistani" required>
+                        <input type="radio" id="pakistani" name="category" value="pakistani">
                         <label for="pakistani" class="button-label">Pakistani</label>
                     </div>
                 </div>
@@ -30,22 +47,22 @@
                         <input type="radio" id="apple" name="stock" value="apple" required>
                         <label for="apple" class="button-label">Apple</label>
                         
-                        <input type="radio" id="amazon" name="stock" value="amazon" required>
+                        <input type="radio" id="amazon" name="stock" value="amazon">
                         <label for="amazon" class="button-label">Amazon</label>
                         
-                        <input type="radio" id="google" name="stock" value="google" required>
+                        <input type="radio" id="google" name="stock" value="google">
                         <label for="google" class="button-label">Google</label>
                         
-                        <input type="radio" id="microsoft" name="stock" value="microsoft" required>
+                        <input type="radio" id="microsoft" name="stock" value="microsoft">
                         <label for="microsoft" class="button-label">Microsoft</label>
                     </div>
-                    
+
                     <div class="button-group pakistani-stocks" style="display: none;">
                         <input type="radio" id="silk" name="stock" value="silk">
                         <label for="silk" class="button-label">Silk Bank</label>
                         
                         <input type="radio" id="pace" name="stock" value="pace">
-                        <label for="pace" class="button-label">Pace Pakistan</label>
+                        <label for="pace" class="button-label">Pace</label>
                         
                         <input type="radio" id="fauji" name="stock" value="fauji">
                         <label for="fauji" class="button-label">Fauji Foods</label>
@@ -56,53 +73,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="days">Prediction Days (1-365)</label>
-                    <input 
-                        type="number" 
-                        id="days" 
-                        name="days" 
-                        min="1" 
-                        max="365" 
-                        required 
-                        placeholder="Enter number of days"
-                    >
+                    <label>Prediction Days (1-365)</label>
+                    <input type="number" name="days" min="1" max="365" required placeholder="Enter number of days">
                 </div>
 
                 <button type="submit" class="predict-button">Predict Stock Prices</button>
             </form>
+
+            <form action="/train-model" method="post" style="margin-top: 20px;">
+                <button type="submit" class="predict-button" style="background-color: #4CAF50;">
+                    Train Model on Latest Data
+                </button>
+            </form>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const internationalRadio = document.getElementById('international');
-            const pakistaniRadio = document.getElementById('pakistani');
-            const internationalStocks = document.querySelector('.stock-group');
-            const pakistaniStocks = document.querySelector('.pakistani-stocks');
-
-            function toggleStocks() {
-                if (internationalRadio.checked) {
-                    internationalStocks.style.display = 'flex';
-                    pakistaniStocks.style.display = 'none';
-                    
-                    // Reset Pakistani stock selection
-                    document.querySelectorAll('.pakistani-stocks input').forEach(radio => {
-                        radio.checked = false;
-                    });
-                } else {
-                    internationalStocks.style.display = 'none';
-                    pakistaniStocks.style.display = 'flex';
-                    
-                    // Reset International stock selection
-                    document.querySelectorAll('.stock-group input').forEach(radio => {
-                        radio.checked = false;
-                    });
-                }
-            }
-
-            internationalRadio.addEventListener('change', toggleStocks);
-            pakistaniRadio.addEventListener('change', toggleStocks);
-        });
-    </script>
 </body>
 </html>
