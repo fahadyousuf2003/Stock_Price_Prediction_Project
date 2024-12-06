@@ -8,29 +8,34 @@ import time
 
 app = Flask(__name__)
 
-# Global variable to track training status
-training_in_progress = False
 
 def train_models():
-    """Background thread to run model training"""
+    """Background thread to run pipeline"""
     global training_in_progress
     try:
         training_in_progress = True
         
-        # Run DVC reproduce command
-        result = subprocess.run(['dvc', 'repro'], 
-                                capture_output=True, 
-                                text=True, 
-                                cwd=os.getcwd())
+        # Run main.py with live output
+        process = subprocess.Popen(['python', 'main.py'], 
+                                   stdout=subprocess.PIPE, 
+                                   stderr=subprocess.STDOUT, 
+                                   universal_newlines=True,
+                                   cwd=os.getcwd())
         
-        # Log the output for debugging
-        print("DVC Training Output:", result.stdout)
-        print("DVC Training Errors:", result.stderr)
+        # Stream output to terminal in real-time
+        while True:
+            output = process.stdout.readline()
+            if output == '' and process.poll() is not None:
+                break
+            if output:
+                print(output.strip())
         
-        if result.returncode != 0:
-            raise Exception(f"Training failed: {result.stderr}")
+        # Check return code
+        if process.returncode != 0:
+            raise Exception(f"Pipeline failed with return code {process.returncode}")
+    
     except Exception as e:
-        print(f"Training error: {e}")
+        print(f"Pipeline error: {e}")
     finally:
         training_in_progress = False
 
@@ -57,11 +62,10 @@ def train_model():
 @app.route('/check-training-status')
 def check_training_status():
     """Route to check training status"""
-    global training_in_progress
     return jsonify({
         'status': 'in_progress' if training_in_progress else 'completed'
     })
-
+    
 @app.route('/predict', methods=['POST'])
 def predict():
     try:

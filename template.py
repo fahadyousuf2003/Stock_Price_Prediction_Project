@@ -26,6 +26,8 @@ list_of_files = [
     "research/trials.ipynb",
     "templates/index.html",
     "templates/predictions.html"
+    "templates/error.html"
+    "templates/training.html"
 ]
 
 

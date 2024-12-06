@@ -7,20 +7,31 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const internationalBtn = document.querySelector('.button-group input[value="International"]');
-            const pakistaniBtn = document.querySelector('.button-group input[value="Pakistani"]');
-            const internationalStocks = document.querySelector('.stock-group');
+            const internationalRadio = document.getElementById('international');
+            const pakistaniRadio = document.getElementById('pakistani');
+            const internationalStocks = document.querySelector('.international-stocks');
             const pakistaniStocks = document.querySelector('.pakistani-stocks');
 
-            internationalBtn.addEventListener('change', function() {
-                internationalStocks.style.display = 'flex';
-                pakistaniStocks.style.display = 'none';
-            });
+            function toggleStocks() {
+                if (internationalRadio.checked) {
+                    internationalStocks.style.display = 'flex';
+                    pakistaniStocks.style.display = 'none';
+                    // Reset stock selection
+                    document.querySelectorAll('.pakistani-stocks input').forEach(el => el.checked = false);
+                } else {
+                    internationalStocks.style.display = 'none';
+                    pakistaniStocks.style.display = 'flex';
+                    // Reset stock selection
+                    document.querySelectorAll('.international-stocks input').forEach(el => el.checked = false);
+                }
+            }
 
-            pakistaniBtn.addEventListener('change', function() {
-                internationalStocks.style.display = 'none';
-                pakistaniStocks.style.display = 'flex';
-            });
+            // Initial call to set correct display
+            toggleStocks();
+
+            // Add event listeners for both radio buttons
+            internationalRadio.addEventListener('change', toggleStocks);
+            pakistaniRadio.addEventListener('change', toggleStocks);
         });
     </script>
 </head>
@@ -43,7 +54,7 @@
 
                 <div class="form-group">
                     <label>Select Stock</label>
-                    <div class="button-group stock-group">
+                    <div class="button-group international-stocks">
                         <input type="radio" id="apple" name="stock" value="apple" required>
                         <label for="apple" class="button-label">Apple</label>
                         
